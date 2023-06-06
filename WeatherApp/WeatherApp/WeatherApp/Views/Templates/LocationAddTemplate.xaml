@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Views.Templates.LocationAddTemplate"
+             Padding="16"
+             CornerRadius="24"
+             HeightRequest="96"
+             FlexLayout.Basis="50%"
+             FlexLayout.AlignSelf="Start"
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}"
+             Margin="4"
+             HasShadow="False"
+             x:Name="template">
+    <StackLayout
+        HorizontalOptions="Center"
+        VerticalOptions="CenterAndExpand">
+        <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Parent.BindingContext.AddLocationCommand, Source={x:Reference template}}" NumberOfTapsRequired="1"></TapGestureRecognizer>
+        </StackLayout.GestureRecognizers>
+        <Label
+            Text="&#xf067;"
+            Style="{StaticResource Headline2_FontAwesome}"
+            HorizontalTextAlignment="Center"
+            Margin="4"></Label>
+        <Label
+            Text="Add location"
+            Style="{StaticResource Body2_BarlowRegular}"></Label>
+    </StackLayout>
+</Frame>

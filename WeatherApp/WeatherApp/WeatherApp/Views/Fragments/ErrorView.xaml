@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WeatherApp.Views.Fragments.ErrorView"
+    RowDefinitions="*, Auto"
+    RowSpacing="0"
+    Margin="16, 0, 16, 0">
+    <Image
+        Grid.Row="0"
+        Aspect="AspectFit"
+        Source="error.png"></Image>
+    <StackLayout 
+        Grid.Row="1">
+        <Label
+            Text="Error"
+            Style="{StaticResource Headline2_FrankRuhleMedium}"
+            TextColor="{StaticResource DarkPrimaryTextColor}"/>
+        <Label
+            Text="Oops, something went wrong! Please wait few moments and try again."
+            Style="{StaticResource Body1_BarlowLight}"
+            TextColor="{StaticResource DarkPrimaryTextColor}"
+            Margin="0, 8, 0, 16"></Label>
+        <Button
+            Text="TRY AGAIN"
+            FontFamily="Barlow_Medium"
+            FontSize="{StaticResource ButtonFontSize}"
+            BackgroundColor="{StaticResource AccentColor}"
+            TextColor="{StaticResource LightPrimaryTextColor}"
+            Padding="16, 22, 16, 22"
+            Margin="16, 8, 16, 24"
+            Command="{Binding TryAgainCommand}"
+            CornerRadius="36"></Button>
+    </StackLayout>
+</Grid>

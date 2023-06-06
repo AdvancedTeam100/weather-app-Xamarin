@@ -1,0 +1,122 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Fonts\Barlow-Light.ttf" />
+    <None Remove="Resources\Fonts\Barlow-Medium.ttf" />
+    <None Remove="Resources\Fonts\Barlow-Regular.ttf" />
+    <None Remove="Resources\Fonts\Barlow-SemiBold.ttf" />
+    <None Remove="Resources\Fonts\FontAwesome.ttf" />
+    <None Remove="Resources\Fonts\FrankRuhlLibre-Black.ttf" />
+    <None Remove="Resources\Fonts\FrankRuhlLibre-Bold.ttf" />
+    <None Remove="Resources\Fonts\FrankRuhlLibre-Light.ttf" />
+    <None Remove="Resources\Fonts\FrankRuhlLibre-Medium.ttf" />
+    <None Remove="Resources\Fonts\FrankRuhlLibre-Regular.ttf" />
+    <None Remove="Resources\Fonts\Barlow-Bold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\Barlow-Light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Barlow-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Barlow-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Barlow-SemiBold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FontAwesome.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FrankRuhlLibre-Black.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FrankRuhlLibre-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FrankRuhlLibre-Light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FrankRuhlLibre-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FrankRuhlLibre-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.6.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
+    <PackageReference Include="Prism.Forms" Version="8.1.97" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.0.4" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.5" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Styles\Fonts.xaml.cs">
+      <DependentUpon>Fonts.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\HourlyItemTemplate.xaml.cs">
+      <DependentUpon>HourlyItemTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\HourlyItemSelectedTemplate.xaml.cs">
+      <DependentUpon>HourlyItemSelectedTemplate.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Styles\Colors.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Styles\Theme.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Dialogs\AddLocationDialog.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Fragments\ConnectionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Fragments\ErrorView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Fragments\SideMenuView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\LocationAddTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\LocationItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\LocationSelectedItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\WelcomePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SettingsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\HourlyItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\HourlyItemSelectedTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\WeatherPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\YourLocationsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+<ItemGroup>
+  <EmbeddedResource Include="settings.json" Condition="'$(Configuration)' != 'Debug' or !Exists('local.settings.json')" />
+  <EmbeddedResource Include="local.settings.json" Link="settings.json" Condition="'$(Configuration)' == 'Debug' and Exists('local.settings.json')" />
+</ItemGroup>
+</Project>

@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fragments="clr-namespace:WeatherApp.Views.Fragments"
+             x:Class="WeatherApp.Views.WeatherPage"
+             NavigationPage.HasNavigationBar="False"
+             x:Name="weatherPage">
+    <ContentPage.Content>
+        <xct:SideMenuView
+            x:Name="menuView"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            xct:SideMenuView.MenuGestureEnabled="False"
+            GestureThreshold="10000">
+            <fragments:SideMenuView
+                xct:SideMenuView.Position="LeftMenu"
+                xct:SideMenuView.MenuWidthPercentage=".6"></fragments:SideMenuView>
+            <RefreshView
+                IsRefreshing="{Binding IsRefreshing}"
+                RefreshColor="{StaticResource PrimaryColor}"
+                Command="{Binding RefreshCommand}">
+                <ScrollView>
+                    <Grid
+                        BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+                        xct:StateLayout.CurrentState="{Binding MainState}" 
+                        xct:StateLayout.AnimateStateChanges="True"
+                        RowDefinitions="Auto, Auto, Auto, Auto, *, Auto, Auto, Auto, Auto"
+                        RowSpacing="0">
+                        <xct:StateLayout.StateViews>
+                            <xct:StateView
+                                StateKey="Loading"
+                                VerticalOptions="FillAndExpand">
+                                <fragments:LoadingView/>
+                            </xct:StateView>
+                            <xct:StateView
+                                StateKey="Error"
+                                VerticalOptions="FillAndExpand">
+                                <xct:StateView.Background>
+                                    <LinearGradientBrush 
+                                        StartPoint="0, 0" 
+                                        EndPoint="0, 1">
+                                        <GradientStop Color="{StaticResource PrimaryColor}" Offset="0.1"></GradientStop>
+                                        <GradientStop Color="{StaticResource PrimaryDarkColor}" Offset="1.0"></GradientStop>
+                                    </LinearGradientBrush>
+                                </xct:StateView.Background>
+                                <fragments:ErrorView></fragments:ErrorView>
+                            </xct:StateView>
+                        </xct:StateLayout.StateViews>
+                        <fragments:ConnectionView
+                            Grid.Row="0"/>
+                        <StackLayout
+                            Grid.Row="1"
+                            Margin="16, 8, 16, 0"
+                            Padding="0, 8, 8, 8"
+                            HorizontalOptions="Start"
+                            Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding MenuCommand}"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                            <Label
+                                Text="&#xf0c9;"
+                                FontSize="{StaticResource Subtitle1FontSize}"
+                                FontFamily="FontAwesome"
+                                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                HorizontalOptions="Start"></Label>
+                        </StackLayout>
+                        <Label
+                            Grid.Row="2"
+                            Text="{Binding CurrentCity}"
+                            Style="{StaticResource Headline2_FrankRuhleMedium}"
+                            Margin="16, 0, 0, 0"></Label>
+                        <Label
+                            Grid.Row="3"
+                            Text="{Binding CurrentCountry}"
+                            Style="{StaticResource Subtitle1_BarlowRegular}"
+                            Margin="16, -8, 0, 0"></Label>
+                        <Label
+                            Grid.Row="4"
+                            Text="{Binding SelectedHour.dt, StringFormat='{0:dddd, d MMMM yyyy HH:mm}'}"
+                            Style="{StaticResource Subtitle2_BarlowRegular}"
+                            Margin="16, 2, 0, 0"></Label>
+                        <Grid
+                            ColumnDefinitions="*, *"
+                            Grid.Row="5"
+                            VerticalOptions="CenterAndExpand"
+                            Margin="24, 16, 24, 16">
+                            <Image 
+                                Grid.Column="0"
+                                Source="{Binding SelectedHour.weather.icon, Converter={StaticResource AppThemeIconConverter}}"
+                                WidthRequest="120"
+                                HeightRequest="120"></Image>
+                            <StackLayout
+                                Grid.Column="1"
+                                Spacing="0"
+                                HorizontalOptions="EndAndExpand"
+                                VerticalOptions="CenterAndExpand">
+                                <Label
+                                    HorizontalOptions="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                Text="{Binding CurrentTemp, StringFormat='{0:N0}°'}"
+                                                Style="{StaticResource Headline0_FrankRuhleBold}"
+                                                CharacterSpacing="-0.5"></Span>
+                                            <Span
+                                                Text="{Binding CurrentTemp, Converter={StaticResource UnitConverter}, ConverterParameter='sign'}"
+                                                Style="{StaticResource Subtitle1_BarlowRegular}"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    Margin="0, -12, 0, 0"
+                                    HorizontalOptions="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                Text="Feels like "
+                                                Style="{StaticResource Body2_BarlowRegular}"></Span>
+                                            <Span
+                                                Text="{Binding SelectedHour.feels_like, Converter={StaticResource UnitConverter}, ConverterParameter='temperature'}"
+                                                Style="{StaticResource Body2_BarlowMedium}"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label
+                                    Text="{Binding SelectedHour.weather.description}"
+                                    Style="{StaticResource Body2_BarlowMedium}"
+                                    HorizontalOptions="EndAndExpand"></Label>
+                            </StackLayout>
+                        </Grid>
+                        <Frame
+                            Grid.Row="6"
+                            HorizontalOptions="FillAndExpand"
+                            Margin="16, 0, 16, 0"
+                            CornerRadius="24"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}">
+                            <Grid
+                                RowDefinitions="Auto, Auto, Auto"
+                                ColumnDefinitions="*, *"
+                                HorizontalOptions="FillAndExpand"
+                                BindableLayout.ItemsSource="{Binding SelectedHour.detailsList}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout 
+                                            Grid.Row="{Binding row}"
+                                            Grid.Column="{Binding col}"
+                                            Margin="0, 0, 4, 0"
+                                            Orientation="Horizontal"
+                                            HorizontalOptions="FillAndExpand">
+                                                <Label
+                                                    Text="{Binding label}"
+                                                    Style="{StaticResource Body2_BarlowRegular_SecondaryColor}"
+                                                    HorizontalOptions="StartAndExpand">
+                                                </Label>
+                                                <Label
+                                                    Text="{Binding value}"
+                                                    Style="{StaticResource Body2_BarlowMedium}"
+                                                    HorizontalOptions="EndAndExpand"></Label>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </Grid>
+                        </Frame>
+                        <StackLayout
+                            Grid.Row="7"
+                            Margin="16, 0, 16, 0"
+                            Padding="0, 0, 0, 2">
+                            <Label
+                                Text="Hourly"
+                                Style="{StaticResource Subtitle1_FrankRuhleMedium}"
+                                Margin="0, 12, 0, 0"></Label>
+                            <CollectionView
+                                x:Name="hourlyForecast"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedHour}"
+                                ItemsSource="{Binding CurrentWeather.hourlyWeatherForecast}"
+                                HeightRequest="90">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="4" SnapPointsType="Mandatory" SnapPointsAlignment="Start"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout
+                                            Margin="0"
+                                            Padding="2">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup Name="CommonStates">
+                                                    <VisualState Name="Selected">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                            <Frame
+                                                Padding="10, 8, 10, 8"
+                                                CornerRadius="24">
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup>
+                                                        <VisualState x:Name="notSelected">
+                                                            <VisualState.StateTriggers>
+                                                                <StateTrigger IsActive="{Binding isActive}"></StateTrigger>
+                                                            </VisualState.StateTriggers>
+                                                            <VisualState.Setters>
+                                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                        <VisualState x:Name="selected">
+                                                            <VisualState.StateTriggers>
+                                                                <StateTrigger IsActive="{Binding isActive, Converter={xct:InvertedBoolConverter}}"></StateTrigger>
+                                                            </VisualState.StateTriggers>
+                                                            <VisualState.Setters>
+                                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}"/>
+                                                                <Setter Property="HasShadow" Value="False"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                                <Grid
+                                                    RowDefinitions="Auto, *, Auto">
+                                                    <Label
+                                                        Grid.Row="0"
+                                                        Text="{Binding dt, StringFormat='{0:HH:mm}'}"
+                                                        Style="{StaticResource Body2_BarlowRegular}"
+                                                        HorizontalOptions="Center">
+                                                    </Label>
+                                                    <Image 
+                                                        Grid.Row="1"
+                                                        Source="{Binding weather.icon, Converter={StaticResource AppThemeIconConverter}}"
+                                                        WidthRequest="36"
+                                                        HeightRequest="36"
+                                                        VerticalOptions="Center">
+                                                    </Image>
+                                                    <Label
+                                                        Grid.Row="2"
+                                                        Text="{Binding temp, Converter={StaticResource UnitConverter}, ConverterParameter='temperature'}"
+                                                        Style="{StaticResource Body2_BarlowRegular}"
+                                                        HorizontalOptions="Center">
+                                                    </Label>
+                                                </Grid>
+                                            </Frame>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                        <StackLayout
+                            Grid.Row="8"
+                            Margin="16, 0, 16, 8">
+                            <Label
+                                Text="Daily"
+                                Style="{StaticResource Subtitle1_FrankRuhleMedium}"
+                                Margin="0, 8, 0, 0"></Label>
+                            <StackLayout
+                                BindableLayout.ItemsSource="{Binding CurrentWeather.dailyWeatherForecast}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <xct:Expander 
+                                            ExpandAnimationEasing="{x:Static Easing.CubicIn}"
+                                            CollapseAnimationEasing="{x:Static Easing.CubicOut}">
+                                            <xct:Expander.Header>
+                                                <Frame
+                                                    Padding="16, 8, 16, 12"
+                                                    CornerRadius="24"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}">
+                                                    <Grid 
+                                                        ColumnDefinitions="Auto, *, Auto">
+                                                        <Image 
+                                                            Grid.Column="0"
+                                                            Source="{Binding weather.icon, Converter={StaticResource AppThemeIconConverter}}"
+                                                            WidthRequest="36"
+                                                            HeightRequest="36"
+                                                            VerticalOptions="CenterAndExpand"></Image>
+                                                        <Label
+                                                            Grid.Column="1"
+                                                            Text="{Binding dt, StringFormat='{0:dddd}'}"
+                                                            Style="{StaticResource Body2_BarlowRegular}"
+                                                            Margin="8, 0, 0, 0"
+                                                            HorizontalOptions="Start"
+                                                            VerticalOptions="CenterAndExpand">
+                                                        </Label>
+                                                        <Label
+                                                            Grid.Column="1"
+                                                            Text="{Binding weather.description}"
+                                                            Style="{StaticResource Caption_BarlowRegular_SecondaryColor}"
+                                                            Margin="8, 0, 0, 0"
+                                                            HorizontalOptions="End"
+                                                            VerticalOptions="CenterAndExpand">
+                                                        </Label>
+                                                        <Label
+                                                            Grid.Column="2"
+                                                            Style="{StaticResource Body2_BarlowRegular}"
+                                                            Margin="0, 0, 8, 0"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="CenterAndExpand">
+                                                            <Label.Text>
+                                                                <MultiBinding StringFormat="{}{0} / {1}">
+                                                                    <Binding Path="minTemp" Converter="{StaticResource UnitConverter}" ConverterParameter="temperature"/>
+                                                                    <Binding Path="maxTemp" Converter="{StaticResource UnitConverter}" ConverterParameter="temperature"/>
+                                                                </MultiBinding>
+                                                            </Label.Text>
+                                                        </Label>
+                                                    </Grid>
+                                                </Frame>
+                                            </xct:Expander.Header>
+                                            <Grid
+                                                RowDefinitions="Auto, Auto, Auto, Auto"
+                                                ColumnDefinitions="*, *"
+                                                Padding="16, 12, 16, 12"
+                                                BindableLayout.ItemsSource="{Binding detailsList}">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout 
+                                                            Grid.Row="{Binding row}"
+                                                            Grid.Column="{Binding col}"
+                                                            Margin="0, 0, 4, 0"
+                                                            Orientation="Horizontal"
+                                                            HorizontalOptions="FillAndExpand">
+                                                            <Label
+                                                                Text="{Binding label}"
+                                                                Style="{StaticResource Body2_BarlowRegular_SecondaryColor}"
+                                                                HorizontalOptions="StartAndExpand">
+                                                            </Label>
+                                                            <Label
+                                                                Text="{Binding value}"
+                                                                Style="{StaticResource Body2_BarlowMedium}"
+                                                                HorizontalOptions="EndAndExpand"></Label>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </Grid>
+                                        </xct:Expander>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                </ScrollView>
+            </RefreshView>
+        </xct:SideMenuView>
+    </ContentPage.Content>
+</ContentPage>

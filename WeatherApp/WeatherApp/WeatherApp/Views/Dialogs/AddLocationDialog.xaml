@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+        xmlns:fragments="clr-namespace:WeatherApp.Views.Fragments"
+        x:Class="WeatherApp.Views.Dialogs.AddLocationDialog"
+        xmlns:prism="http://prismlibrary.com"
+        prism:ViewModelLocator.AutowireViewModel="True"
+        prism:DialogLayout.CloseOnBackgroundTapped="True"
+        prism:DialogLayout.RelativeWidthRequest=".85"
+        CornerRadius="24"
+        BackgroundColor="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}">
+    <prism:DialogLayout.Mask>
+        <StackLayout BackgroundColor="{AppThemeBinding Light={StaticResource LightTransparentBackgroundColor}, Dark={StaticResource DarkTransparentBackgroundColor}}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"></StackLayout>
+    </prism:DialogLayout.Mask>
+    <StackLayout
+        xct:StateLayout.CurrentState="{Binding MainState}" 
+        xct:StateLayout.AnimateStateChanges="True">
+        <xct:StateLayout.StateViews>
+            <xct:StateView
+                StateKey="Loading"
+                VerticalOptions="FillAndExpand">
+                <fragments:LoadingView/>
+            </xct:StateView>
+        </xct:StateLayout.StateViews>
+        <Label Text="Add new location"
+               TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+               FontSize="{StaticResource Headline4FontSize}"
+               FontFamily="FrankRuhle_Medium"
+               HorizontalOptions="StartAndExpand"/>
+        <Frame
+            HasShadow="False"
+            Padding="4"
+            CornerRadius="24"
+            Margin="0, 8, 0, 8"
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}">
+            <Entry
+                x:Name="locationName"
+                Margin="8, 0, 8, 0"
+                Placeholder="Add new location name"
+                PlaceholderColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                <Entry.Effects>
+                    <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                </Entry.Effects>
+                <Entry.Behaviors>
+                    <prism:EventToCommandBehavior
+                        EventName="Completed"
+                        Command="{Binding UseCurrentLocationCommand}"
+                        CommandParameter="{Binding Text, Source={x:Reference locationName}}"></prism:EventToCommandBehavior>
+                </Entry.Behaviors>
+            </Entry>
+        </Frame>
+        <Label
+            Margin="0, 0, 0, 8"
+            IsVisible="{Binding HasError}"
+            Text="Unfortunately, we can't find this location. You can try something like New York"
+            TextColor="{StaticResource FailColor}"></Label>
+        <Button 
+            Text="ADD LOCATION"
+            FontFamily="Barlow_Medium"
+            FontSize="{StaticResource ButtonFontSize}"
+            BackgroundColor="{StaticResource AccentColor}"
+            TextColor="{StaticResource PrimaryDarkColor}"
+            Padding="8, 0, 8, 0"
+            Command="{Binding UseCurrentLocationCommand}"
+            CommandParameter="{Binding Text, Source={x:Reference locationName}}"
+            CornerRadius="36"/>
+    </StackLayout>
+</Frame>

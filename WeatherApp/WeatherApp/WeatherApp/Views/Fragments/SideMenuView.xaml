@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WeatherApp.Views.Fragments.SideMenuView"
+    Padding="0, 36, 0, 0"
+    VerticalOptions="FillAndExpand"
+    BackgroundColor="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}">
+    <Label 
+        Text="Weather App"
+        Style="{StaticResource Headline4_FrankRuhleMedium}"
+        Margin="16, 16, 0, 24"></Label>
+    <StackLayout
+        Margin="16, 16, 0, 0"
+        BindableLayout.ItemsSource="{Binding MenuItems}"
+        x:Name="menuList">
+        <BindableLayout.ItemTemplate>
+            <DataTemplate>
+                <Grid
+                    Padding="0, 12, 0, 0"
+                    ColumnDefinitions="36, Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.SideMenuCommand, Source={x:Reference menuList}}" CommandParameter="{Binding Label}"></TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Label
+                        Grid.Column="0"
+                        Text="{Binding Icon}"
+                        Style="{StaticResource Headline4_FontAwesome}"
+                        TextColor="{StaticResource AccentColor}"
+                        HorizontalOptions="Center"></Label>
+                    <Label 
+                        Grid.Column="1"
+                        Text="{Binding Label}"
+                        Style="{StaticResource Body1_BarlowRegular}"
+                        VerticalOptions="Center"></Label>
+                </Grid>
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+    </StackLayout>
+    <StackLayout
+        VerticalOptions="EndAndExpand">
+        <Label 
+            Text="Log out"
+            Style="{StaticResource Body1_BarlowRegular}"
+            Margin="16, 0, 0, 8"></Label>
+        <Label 
+            Text="Version 1.0.0"
+            Style="{StaticResource Caption_BarlowRegular_SecondaryColor}"
+            Margin="16, 0, 0, 36"></Label>
+    </StackLayout>
+</StackLayout>
